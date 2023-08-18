@@ -1,29 +1,39 @@
 {
-  "name": "niko-home-control",
-  "version": "0.4.3",
+  "name": "@vandeurenglenn/niko-home-control",
+  "version": "1.0.0",
   "description": "A connector for the Niko Home Control API",
-  "main": "index.js",
-  "dependencies": {
-    "bluebird": "3.4.1"
-  },
-  "devDependencies": {},
+  "type": "module",
   "scripts": {
+    "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports": {
+    ".": {
+      "import": "./exports/index.js",
+      "types": "./exports/index.d.ts"
+    }
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/satblip/niko-home-control.git"
   },
   "keywords": [
-    "Niko",
-    "Home",
-    "Control",
-    "Domotic"
+    "niko",
+    "home",
+    "control",
+    "domotica"
   ],
   "author": "Louis Borsu <sat@satprod.net>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/satblip/niko-home-control/issues"
   },
-  "homepage": "https://github.com/satblip/niko-home-control#readme"
+  "homepage": "https://github.com/satblip/niko-home-control#readme",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.2",
+    "@types/node": "^20.5.0",
+    "nhc_dummy_api": "^1.0.0",
+    "rollup": "^3.28.0",
+    "tslib": "^2.6.1"
+  }
 }
