@@ -16,12 +16,12 @@ const niko = new NikoHomeControl({
 
 try {
   await niko.connect()
+  await niko.listActions()
+  await niko.startEvents()
 } catch (error) {
   console.error(error)
 }
 ```
-
-`events` enables direct events from the controller, such as energy consumption and actions states.
 
 ## Usage
 
@@ -43,6 +43,11 @@ await niko.listActions()
 await niko.executeActions(id, value)
 ```
 
+### Start listening to events
+
+```js
+await niko.startEvents()
+```
 
 ### Get energy info
 
