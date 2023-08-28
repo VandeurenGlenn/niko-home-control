@@ -1,6 +1,6 @@
 {
   "name": "@vandeurenglenn/niko-home-control",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A connector for the Niko Home Control API",
   "type": "module",
   "scripts": {
