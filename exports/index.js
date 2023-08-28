@@ -32,22 +32,28 @@ class Client extends Events {
         this.host = options.host;
         this.port = options.port;
         this.serverTimeout = options.timeout;
-        this.tcpClient = net.connect({
-            host: this.host,
-            port: this.port
-        }, () => {
-            if (options.events) {
-                this.tcpClient.setKeepAlive(true);
-                this.tcpClient.write('{"cmd": "startevents"}');
-                this.tcpClient.on('data', (data) => {
-                    var eventBuffer = Buffer.from('', 'utf-8');
-                    eventBuffer = Buffer.concat([eventBuffer, Buffer.from(data, 'utf-8')]);
-                    this.#parseEvent(eventBuffer.toString());
-                    eventBuffer = null;
-                });
-            }
+        this.eventsEnabled = options.events;
+    }
+    async connect() {
+        return new Promise((resolve, reject) => {
+            this.tcpClient = net.connect({
+                host: this.host,
+                port: this.port
+            }, () => {
+                if (this.eventsEnabled) {
+                    this.tcpClient.setKeepAlive(true);
+                    this.tcpClient.write('{"cmd": "startevents"}');
+                    this.tcpClient.on('data', (data) => {
+                        var eventBuffer = Buffer.from('', 'utf-8');
+                        eventBuffer = Buffer.concat([eventBuffer, Buffer.from(data, 'utf-8')]);
+                        this.#parseEvent(eventBuffer.toString());
+                        eventBuffer = null;
+                    });
+                }
+            });
+            this.tcpClient.on('error', error => reject(error));
+            this.tcpClient.on('connect', () => resolve(true));
         });
-        this.tcpClient.on('error', error => this.emit('error', error));
     }
     #parseEvent(event) {
         if (event.indexOf('getlive') > 0 || event.indexOf('listactions') > 0) {

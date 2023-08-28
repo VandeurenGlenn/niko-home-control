@@ -8,6 +8,8 @@ export default class Client extends Events {
     port: number;
     serverTimeout: EpochTimeStamp;
     tcpClient: net.Socket;
+    eventsEnabled: boolean;
     constructor(options: any);
+    connect(): Promise<unknown>;
     request: (line: any) => Promise<string>;
 }

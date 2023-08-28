@@ -1,18 +1,24 @@
 # Connector for the Niko Home Control API
 
-[![Known Vulnerabilities](https://snyk.io/test/github/satblip/niko-home-control/badge.svg)](https://snyk.io/test/github/satblip/niko-home-control)
+[![Known Vulnerabilities](https://snyk.io/test/github/vandeurenglenn/niko-home-control/badge.svg)](https://snyk.io/test/github/vandeurenglenn/niko-home-control)
 
 ## Init
 
 ```js
-const niko = require('niko-home-control');
+import NikoHomeControl  from '@vandeurenglenn/niko-home-control';
 
-niko.init({
-  ip: 'xxx.xxx.xxx.xxx',
+const niko = new NikoHomeControl({
+  ip: '0.0.0.0',
   port: 8000,
   timeout: 20000,
   events: true
 });
+
+try {
+  await niko.connect()
+} catch (error) {
+  console.error(error)
+}
 ```
 
 `events` enables direct events from the controller, such as energy consumption and actions states.
@@ -22,58 +28,38 @@ niko.init({
 ### Get the list of available locations
 
 ```js
-niko
-  .listLocations()
-  .then(function (response) {
-    console.log(response);
-  });
+await niko.listLocations()
 ```
 
 ### Get the list of available actions
 
 ```js
-niko
-  .listActions()
-  .then(function (response) {
-    console.log(response);
-  });
+await niko.listActions()
 ```
 
 ### Perform an action
 
 ```js
-niko
-  .executeActions(id, value)
-  .then(function (response) {
-    console.log(response);
-  });
+await niko.executeActions(id, value)
 ```
 
 
 ### Get energy info
 
 ```js
-niko
-  .listEnergy()
-  .then(function (response) {
-    console.log(response);
-  });
+await niko.listEnergy()
 ```
 
 ### Get system info
 
 ```js
-niko
-  .systemInfo()
-  .then(function (response) {
-    console.log(response);
-  });
+await niko.systemInfo()
 ```
 
 ### Reveive energy consumption events
 
 ```js
-niko.events.on('getlive', (data) => {
+niko.on('getlive', (data) => {
   console.log(data, 'live');
 });
 ```
@@ -81,7 +67,9 @@ niko.events.on('getlive', (data) => {
 ### Reveive actions states events
 
 ```js
-niko.events.on('listactions', (data) => {
+niko.on('listactions', (data) => {
   console.log(data, 'actions');
 });
 ```
+
+TODO: notice parts of code and readme come from Louis Borsu <sat@satprod.net> github/satblip/niko-home-control
