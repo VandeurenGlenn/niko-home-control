@@ -29,6 +29,8 @@ export default class Client extends Events {
         });
       }
     })
+
+    this.tcpClient.on('error', error => this.emit('error', error))
   }
 
   #parseEvent(event) {
@@ -62,8 +64,7 @@ export default class Client extends Events {
       }, () => {
         client.write(lineSend);
       })
-  
-      // Still have to figure how to work with long responses
+      
       client.on('data', (data: string) => {
         buffer = Buffer.concat([buffer, Buffer.from(data, 'utf-8')]);
         client.end();

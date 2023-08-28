@@ -14,7 +14,6 @@ class Client extends Events {
                 }, () => {
                     client.write(lineSend);
                 });
-                // Still have to figure how to work with long responses
                 client.on('data', (data) => {
                     buffer = Buffer.concat([buffer, Buffer.from(data, 'utf-8')]);
                     client.end();
@@ -48,6 +47,7 @@ class Client extends Events {
                 });
             }
         });
+        this.tcpClient.on('error', error => this.emit('error', error));
     }
     #parseEvent(event) {
         if (event.indexOf('getlive') > 0 || event.indexOf('listactions') > 0) {
@@ -92,9 +92,9 @@ const generateError = (errorCode) => {
 class NikoHomeControl extends Client {
     constructor(options) {
         if (!options)
-            throw new Error('atleast {ip: yourhost/ip} is required got undefined');
+            throw new Error('atleast {host: yourhost/ip} is required got undefined');
         if (!options.host)
-            throw new Error(`ip required`);
+            throw new Error(`host required`);
         options = { ...defaultOptions, ...options };
         super(options);
     }
